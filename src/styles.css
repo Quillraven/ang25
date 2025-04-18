@@ -1,0 +1,140 @@
+/* styles.scss */
+body {
+  background-color: #281330;
+  /* Deeper, richer dark purple */
+  color: #b9f6ca;
+  /* Softer, more muted light green */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* More modern font */
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  background-color: #38006b;
+  /* Darker, more intense purple for header */
+  color: #e6ee9c;
+  /* Soft, yellowish-green for header text */
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  /* Subtle shadow for depth */
+}
+
+.app-header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.app-header nav a {
+  color: #b9f6ca;
+  text-decoration: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border: 1px solid transparent;
+  /* Add a transparent border initially */
+
+  &:hover {
+    background-color: #1b5e20;
+    /* Darker, more natural green on hover */
+    color: #f0f4c3;
+    /* Lighter text on hover */
+    border-color: #64dd17;
+    /* Green border on hover */
+  }
+
+  &.active-link {
+    background-color: #64dd17;
+    /* Active link color */
+    color: #281330;
+    /* Dark text for active link */
+    font-weight: bold;
+  }
+}
+
+.app-content {
+  flex-grow: 1;
+  padding: 2.5rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  /* Very subtle background for content area */
+}
+
+.app-content>div {
+  border: 1px solid #4caf50;
+  /* More appealing green border */
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+  /* Slightly transparent background for content */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  /* Subtle shadow for content boxes */
+}
+
+.app-content h1,
+.app-content h2,
+.app-content p {
+  margin-bottom: 1rem;
+}
+
+.app-content a {
+  color: #8bc34a;
+  /* More vibrant green for links within content */
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #c6ff00;
+    /* Brighter green on hover */
+    text-decoration: underline;
+  }
+}
+
+.app-footer {
+  background-color: #38006b;
+  color: #e6ee9c;
+  text-align: center;
+  padding: 1.2rem;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  /* Enable flexbox */
+  justify-content: center;
+  /* Center items horizontally */
+  align-items: center;
+  /* Center items vertically */
+  gap: 1rem;
+  /* Space between children (p and a) */
+}
+
+.app-footer p {
+  margin: 0;
+  /* Remove default paragraph margins */
+}
+
+.github-link {
+  text-decoration: none;
+  /* You might want to remove text-align: center from here if it's causing issues */
+}
+
+.github-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  /* Should help align with text if any */
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

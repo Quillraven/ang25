@@ -1,0 +1,17 @@
+<div class="enemies-grid">
+    @for (enemy of enemies; track enemy.name) {
+    <div class="enemy-card">
+        <img [src]="enemy.imageUrl" [alt]="enemy.name">
+        <p class="level">Level: {{ enemy.level }}</p>
+        <h3>{{ enemy.name }}</h3>
+        <div class="stats-group">
+            <p>Life: {{ enemy.life }}</p>
+            <p>Agility: {{ enemy.agility }}</p>
+            <p>XP: <span class="highlight">{{ enemy.xp }}</span></p>
+            <p>Talons: <span class="highlight">{{ enemy.talons }}</span></p>
+        </div>
+    </div>
+    } @empty {
+    <p>Loading enemies...</p>
+    }
+</div>
