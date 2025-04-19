@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavigationComponent } from './navigation/navigation.component';
-import { FooterComponent } from './footer/footer.component';
+import {NavigationComponent} from './components/navigation/navigation.component';
+import {FooterComponent} from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +10,5 @@ import { FooterComponent } from './footer/footer.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'ang25';
+  title = 'masamune-ang';
 }

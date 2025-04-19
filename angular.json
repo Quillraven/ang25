@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ang25": {
+    "masamune-ang": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ang25",
+            "outputPath": "dist/masamune-ang",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ang25:build:production"
+              "buildTarget": "masamune-ang:build:production"
             },
             "development": {
-              "buildTarget": "ang25:build:development"
+              "buildTarget": "masamune-ang:build:development"
             }
           },
           "defaultConfiguration": "development"

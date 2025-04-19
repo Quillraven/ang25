@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs';
-import { DataParserService } from '../../services/data-parser.service';
-import {NgOptimizedImage} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {switchMap} from 'rxjs';
+import {DataParserService} from '../../services/data-parser.service';
 
 export interface Enemy {
   imageUrl: string;
@@ -21,7 +20,8 @@ export interface Enemy {
 export class EnemiesComponent implements OnInit {
   enemies: Enemy[] = [];
 
-  constructor(private dataParserService: DataParserService) { }
+  constructor(private dataParserService: DataParserService) {
+  }
 
   ngOnInit(): void {
     this.dataParserService.fetchEnemyXml().pipe(
@@ -45,8 +45,7 @@ export class EnemiesComponent implements OnInit {
 
   updateEnemyNames(propsMap: { [key: string]: string }): void {
     this.enemies.forEach(enemy => {
-      const enemyName = propsMap['enemy.' + enemy.name + ".name"] ?? "unnamed";
-      enemy.name = enemyName;
+      enemy.name = propsMap['enemy.' + enemy.name + ".name"] ?? "unnamed";
     });
   }
 
