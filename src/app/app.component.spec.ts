@@ -20,10 +20,12 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('ang25');
   });
 
-  it('should render title', () => {
+  it('should render the app structure', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ang25');
+    expect(compiled.querySelector('app-navigation')).toBeTruthy();
+    expect(compiled.querySelector('app-footer')).toBeTruthy();
+    expect(compiled.querySelector('router-outlet')).toBeTruthy();
   });
 });
