@@ -1,17 +1,32 @@
-<div class="enemies-grid">
-    @for (enemy of enemies; track enemy.name) {
-    <div class="enemy-card">
-        <img [src]="enemy.imageUrl" [alt]="enemy.name">
-        <p class="level">Level: {{ enemy.level }}</p>
-        <h3>{{ enemy.name }}</h3>
-        <div class="stats-group">
-            <p>Life: {{ enemy.life }}</p>
-            <p>Agility: {{ enemy.agility }}</p>
-            <p>XP: <span class="highlight">{{ enemy.xp }}</span></p>
-            <p>Talons: <span class="highlight">{{ enemy.talons }}</span></p>
+<div class="m-2 grid gap-4 grid-cols-[repeat(auto-fit,minmax(100px,150px))]">
+  @for (enemy of enemies; track enemy.name) {
+    <div class="card bg-base-200 shadow-md flex flex-col items-center text-center transform transition-transform duration-500 hover:scale-110">
+      <figure class="m-2 w-24 h-24 overflow-hidden">
+        <img [src]="enemy.imageUrl"
+             alt="{{enemy.name}}"
+             class="rounded-xl w-full h-full object-cover"
+             style="image-rendering: pixelated;"
+        />
+      </figure>
+      <div class="card-body p-4">
+        <h2 class="card-title text-lg font-bold">{{ enemy.name }}</h2>
+        <div class="text-sm opacity-70">Level: {{ enemy.level }}</div>
+        <div class="py-2">
+          <div>Life: {{ enemy.life }}</div>
+          <div>Agility: {{ enemy.agility }}</div>
+          <div>Talons: {{ enemy.talons }}</div>
+          <div>
+            XP:
+            <span class="font-bold text-primary">{{ enemy.xp }}</span>
+          </div>
+          <div>
+            Gold:
+            <span class="font-bold text-warning">{{ enemy.talons }}</span>
+          </div>
         </div>
+      </div>
     </div>
-    } @empty {
+  } @empty {
     <p>Loading enemies...</p>
-    }
+  }
 </div>

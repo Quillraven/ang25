@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs';
 import { DataParserService } from '../data-parser.service';
+import {NgOptimizedImage} from '@angular/common';
 
 export interface Enemy {
   imageUrl: string;
@@ -14,7 +15,6 @@ export interface Enemy {
 
 @Component({
   selector: 'app-enemies',
-  imports: [],
   templateUrl: './enemies.component.html',
   styleUrl: './enemies.component.css'
 })
