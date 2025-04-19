@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, from, map } from 'rxjs';
 import xml2js from 'xml2js';
-import { Enemy } from './enemies/enemies.component';
+import {Enemy} from '../components/enemies/enemies.component';
 
 @Injectable({
   providedIn: 'root'

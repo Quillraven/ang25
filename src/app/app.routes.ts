@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { EnemiesComponent } from './enemies/enemies.component';
-import { GameComponent } from './game/game.component';
-import { HomeComponent } from './home/home.component';
-import { HowToComponent } from './how-to/how-to.component';
-import { ItemsComponent } from './items/items.component';
-import { SpellsComponent } from './spells/spells.component';
+import { EnemiesComponent } from './components/enemies/enemies.component';
+import { GameComponent } from './components/game/game.component';
+import { HomeComponent } from './components/home/home.component';
+import { HowToComponent } from './components/how-to/how-to.component';
+import { ItemsComponent } from './components/items/items.component';
+import { SpellsComponent } from './components/spells/spells.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },

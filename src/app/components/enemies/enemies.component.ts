@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs';
-import { DataParserService } from '../data-parser.service';
+import { DataParserService } from '../../services/data-parser.service';
 import {NgOptimizedImage} from '@angular/common';
 
 export interface Enemy {
