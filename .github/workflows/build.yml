@@ -28,18 +28,6 @@ jobs:
       - name: Build Angular app
         run: npx ng build --output-path docs --base-href /masamune-ang/
 
-      - name: Move files from docs/browser to docs
-        run: |
-          if [ -d "docs/browser" ]; then
-            cp -r docs/browser/* docs/
-          fi
-
-      - name: Delete browser folder
-        run: |
-          if [ -d "docs/browser" ]; then
-            rm -rf docs/browser
-          fi
-
       - name: Create 404.html from index.html
         run: |
           if [ -f "docs/index.html" ]; then
@@ -47,8 +35,7 @@ jobs:
           fi
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          publish_branch: gh-pages
+          branch: gh-pages
+          folder: docs/browser/
