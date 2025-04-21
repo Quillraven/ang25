@@ -52,7 +52,7 @@
             <div>Strength: {{ item.strength }}</div>
           }
           @if (item.magicalEvade !== 0) {
-            <div>Magical evade: {{ item.magicalEvade }}</div>
+            <div>Magical evade: {{ item.magicalEvade * 100 }}%</div>
           }
           @if (item.resistance !== 0) {
             <div>Resistance: {{ item.resistance }}</div>

@@ -7,6 +7,10 @@ export interface Enemy {
   name: string;
   level: number;
   life: number;
+  mana: number;
+  resistance: number;
+  armor: number;
+  physicalEvade: number;
   agility: number;
   damage: number;
   talons: number;

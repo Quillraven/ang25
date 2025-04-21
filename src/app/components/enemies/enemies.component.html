@@ -19,6 +19,18 @@
             Damage:
             <span class="font-bold">{{ enemy.damage }}</span>
           </div>
+          @if (enemy.mana !== 0) {
+            <div>Mana: {{ enemy.mana }}</div>
+          }
+          @if (enemy.resistance !== 0) {
+            <div>Resistance: {{ enemy.resistance }}</div>
+          }
+          @if (enemy.armor !== 0) {
+            <div>Armor: {{ enemy.armor }}</div>
+          }
+          @if (enemy.physicalEvade !== 0) {
+            <div>Physical evade: {{ enemy.physicalEvade * 100 }}%</div>
+          }
           <div>
             XP:
             <span class="font-bold text-warning">{{ enemy.xp }}</span>

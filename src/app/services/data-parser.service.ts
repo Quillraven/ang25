@@ -51,6 +51,10 @@ export class DataParserService {
           const life = parseInt(stats.find((stat: any) => stat.$.name === 'baseLife')?.$?.value ?? 0);
           const agility = parseInt(stats.find((stat: any) => stat.$.name === 'agility')?.$?.value ?? 0);
           const damage = parseInt(stats.find((stat: any) => stat.$.name === 'damage')?.$?.value ?? 0);
+          const mana = parseInt(stats.find((stat: any) => stat.$.name === 'baseMana')?.$?.value ?? 0);
+          const resistance = parseInt(stats.find((stat: any) => stat.$.name === 'resistance')?.$?.value ?? 0);
+          const armor = parseInt(stats.find((stat: any) => stat.$.name === 'armor')?.$?.value ?? 0);
+          const physicalEvade = parseFloat(stats.find((stat: any) => stat.$.name === 'physicalEvade')?.$?.value ?? 0);
 
           const actions = enemyProps.property.find((prop: any) => prop.$.name === 'combatActions')?.$?.value ?? '';
 
@@ -59,6 +63,10 @@ export class DataParserService {
             name: name,
             level: level,
             damage: damage,
+            mana: mana,
+            resistance: resistance,
+            armor: armor,
+            physicalEvade: physicalEvade,
             life: life,
             agility: agility,
             talons: talons,
@@ -112,10 +120,10 @@ export class DataParserService {
           const life = parseInt(stats.find((stat: any) => stat.$.name === 'life')?.$?.value ?? 0);
           const manaMax = parseInt(stats.find((stat: any) => stat.$.name === 'manaMax')?.$?.value ?? 0);
           const mana = parseInt(stats.find((stat: any) => stat.$.name === 'mana')?.$?.value ?? 0);
-          const physicalDamage = parseInt(stats.find((stat: any) => stat.$.name === 'physicalDamage')?.$?.value ?? 0);
+          const physicalDamage = parseFloat(stats.find((stat: any) => stat.$.name === 'physicalDamage')?.$?.value ?? 0);
           const armor = parseInt(stats.find((stat: any) => stat.$.name === 'armor')?.$?.value ?? 0);
           const strength = parseInt(stats.find((stat: any) => stat.$.name === 'strength')?.$?.value ?? 0);
-          const magicalEvade = parseInt(stats.find((stat: any) => stat.$.name === 'magicalEvade')?.$?.value ?? 0);
+          const magicalEvade = parseFloat(stats.find((stat: any) => stat.$.name === 'magicalEvade')?.$?.value ?? 0);
           const resistance = parseInt(stats.find((stat: any) => stat.$.name === 'resistance')?.$?.value ?? 0);
 
           items.push({
