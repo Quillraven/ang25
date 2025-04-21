@@ -8,8 +8,10 @@ export interface Enemy {
   level: number;
   life: number;
   agility: number;
+  damage: number;
   talons: number;
   xp: number;
+  actions: string[];
 }
 
 @Component({
@@ -34,6 +36,7 @@ export class EnemiesComponent implements OnInit {
     ).subscribe({
       next: (propsData: { [key: string]: string }) => {
         this.updateEnemyNames(propsData);
+        this.updateActionNames(propsData);
         this.sortEnemies();
       },
 
@@ -46,6 +49,20 @@ export class EnemiesComponent implements OnInit {
   updateEnemyNames(propsMap: { [key: string]: string }): void {
     this.enemies.forEach(enemy => {
       enemy.name = propsMap['enemy.' + enemy.name + ".name"] ?? "unnamed";
+    });
+  }
+
+  updateActionNames(propsMap: { [key: string]: string }): void {
+    this.enemies.forEach(enemy => {
+      enemy.actions = enemy.actions.map(action => {
+        if (action === 'ATTACK_SINGLE') {
+          return "Attack (Single)"
+        } else if (action === 'REGENERATE1') {
+          action = "Regenerate";
+        }
+
+        return propsMap['magic.' + action.toLowerCase() + ".name"] ?? action;
+      })
     });
   }
 

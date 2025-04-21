@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, from, map } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
+import {from, map, Observable} from 'rxjs';
 import xml2js from 'xml2js';
 import {Enemy} from '../components/enemies/enemies.component';
 
@@ -37,26 +37,32 @@ export class DataParserService {
           const name = imageSource.split('/')[1].split('.')[0];
           const imageUrl = 'https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/assets/maps/' + imageSource;
 
-          const level = enemyTile.properties[0].property.find((prop: any) => prop.$.name === 'level')?.$?.value ?? 0;
-          const talons = enemyTile.properties[0].property.find((prop: any) => prop.$.name === 'talons')?.$?.value ?? 0;
-          const xp = enemyTile.properties[0].property.find((prop: any) => prop.$.name === 'xp')?.$?.value ?? 0;
+          let enemyProps = enemyTile.properties[0];
+          const level = enemyProps.property.find((prop: any) => prop.$.name === 'level')?.$?.value ?? 0;
+          const talons = enemyProps.property.find((prop: any) => prop.$.name === 'talons')?.$?.value ?? 0;
+          const xp = enemyProps.property.find((prop: any) => prop.$.name === 'xp')?.$?.value ?? 0;
 
-          const stats = enemyTile.properties[0].property
+          const stats = enemyProps.property
             .find((prop: any) => prop.$.name === 'stats')
             ?.properties[0]
             ?.property
             ?? {};
           const life = parseInt(stats.find((stat: any) => stat.$.name === 'baseLife')?.$?.value ?? 0);
           const agility = parseInt(stats.find((stat: any) => stat.$.name === 'agility')?.$?.value ?? 0);
+          const damage = parseInt(stats.find((stat: any) => stat.$.name === 'damage')?.$?.value ?? 0);
+
+          const actions = enemyProps.property.find((prop: any) => prop.$.name === 'combatActions')?.$?.value ?? '';
 
           enemies.push({
             imageUrl: this.sanitizeImageUrl(imageUrl),
             name: name,
             level: level,
+            damage: damage,
             life: life,
             agility: agility,
             talons: talons,
             xp: xp,
+            actions: actions.split(','),
           });
         });
 
