@@ -26,8 +26,8 @@ export class EnemiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataParserService.fetchEnemyXml().pipe(
-      switchMap(enemyXml => this.dataParserService.parseEnemyXml(enemyXml)),
+    this.dataParserService.fetchObjectsXml().pipe(
+      switchMap(objectsXml => this.dataParserService.parseEnemyXml(objectsXml)),
       switchMap(parsedEnemies => {
         this.enemies = parsedEnemies;
         return this.dataParserService.fetchProperties();

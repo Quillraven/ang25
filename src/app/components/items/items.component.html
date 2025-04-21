@@ -1,1 +1,69 @@
-<p>items works!</p>
+<div class="m-2 grid gap-4 grid-cols-[repeat(auto-fit,minmax(100px,175px))]">
+  @for (item of items; track item.name) {
+    <div
+      class="card bg-base-200 shadow-md flex flex-col items-center text-start transform transition-transform duration-500 hover:scale-110">
+      <figure class="m-2 w-14 h-14 overflow-hidden">
+        <img [src]="item.imageUrl"
+             alt="{{item.name}}"
+             class="rounded-xl w-full h-full object-contain"
+             style="image-rendering: pixelated;"
+        />
+      </figure>
+      <div class="card-body p-4">
+        <h2 class="card-title text-lg font-bold">{{ item.name }}</h2>
+        <div class="text-sm text-accent opacity-80">Category: {{ item.category }}</div>
+        <div>
+          Cost:
+          <span class="font-bold text-warning">{{ item.cost }}</span>
+        </div>
+        @if (item.action) {
+          <div>Action: {{ item.action }}</div>
+        }
+
+        <div>
+          @if (item.constitution !== 0) {
+            <div>Constitution: {{ item.constitution }}</div>
+          }
+          @if (item.damage !== 0) {
+            <div>Damage: {{ item.damage }}</div>
+          }
+          @if (item.intelligence !== 0) {
+            <div>Intelligence: {{ item.intelligence }}</div>
+          }
+          @if (item.lifeMax !== 0) {
+            <div>Max life: {{ item.lifeMax }}</div>
+          }
+          @if (item.life !== 0) {
+            <div>Restores life: {{ item.life }}</div>
+          }
+          @if (item.manaMax !== 0) {
+            <div>Max mana: {{ item.manaMax }}</div>
+          }
+          @if (item.mana !== 0) {
+            <div>Restores mana: {{ item.mana }}</div>
+          }
+          @if (item.physicalDamage !== 0) {
+            <div>Physical damage: {{ item.physicalDamage }}</div>
+          }
+          @if (item.armor !== 0) {
+            <div>Armor: {{ item.armor }}</div>
+          }
+          @if (item.strength !== 0) {
+            <div>Strength: {{ item.strength }}</div>
+          }
+          @if (item.magicalEvade !== 0) {
+            <div>Magical evade: {{ item.magicalEvade }}</div>
+          }
+          @if (item.resistance !== 0) {
+            <div>Resistance: {{ item.resistance }}</div>
+          }
+          @if (item.speed !== 0) {
+            <div>Move speed: {{ item.speed }}</div>
+          }
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <p>Loading items...</p>
+  }
+</div>
