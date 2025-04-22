@@ -1,6 +1,9 @@
 <div class="m-2">
   @if (getCategories().length === 0) {
-    <p>Loading items...</p>
+    <div class="ml-2 flex items-center justify-start gap-4">
+      <p>Loading items</p>
+      <span class="loading loading-dots loading-md"></span>
+    </div>
   }
 
   @for (category of getCategories(); track category) {
