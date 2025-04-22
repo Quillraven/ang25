@@ -37,7 +37,16 @@ export class ItemsComponent implements OnInit {
 
   getCategories(): string[] {
     const categories = [...new Set(this.items.map(item => item.category))];
-    return categories;
+
+    // Define the order of categories
+    const categoryOrder = ['Weapon', 'Armor', 'Helmet', 'Boots', 'Accessory', 'Other', 'Quest'];
+
+    // Sort categories based on the defined order
+    return categories.sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a);
+      const indexB = categoryOrder.indexOf(b);
+      return indexA - indexB;
+    });
   }
 
   getItemsByCategory(category: string): Item[] {

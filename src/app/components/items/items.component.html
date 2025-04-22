@@ -8,7 +8,11 @@
 
   @for (category of getCategories(); track category) {
     <div class="collapse collapse-arrow bg-base-200 mb-4">
-      <input type="checkbox"/>
+      @if (category === 'Weapon') {
+        <input type="checkbox" checked/>
+      } @else {
+        <input type="checkbox"/>
+      }
       <div class="collapse-title text-xl font-medium">
         {{ category }}
       </div>
@@ -26,10 +30,12 @@
               </figure>
               <div class="card-body p-4">
                 <h2 class="card-title text-lg font-bold">{{ item.name }}</h2>
-                <div>
-                  Cost:
-                  <span class="font-bold text-warning">{{ item.cost }}</span>
-                </div>
+                @if (item.cost > 0) {
+                  <div>
+                    Cost:
+                    <span class="font-bold text-warning">{{ item.cost }}</span>
+                  </div>
+                }
                 @if (item.action) {
                   <div>Action: {{ item.action }}</div>
                 }
