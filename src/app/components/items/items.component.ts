@@ -35,6 +35,15 @@ export class ItemsComponent implements OnInit {
   constructor(private dataParserService: DataParserService) {
   }
 
+  getCategories(): string[] {
+    const categories = [...new Set(this.items.map(item => item.category))];
+    return categories;
+  }
+
+  getItemsByCategory(category: string): Item[] {
+    return this.items.filter(item => item.category === category);
+  }
+
   ngOnInit(): void {
     this.dataParserService.fetchObjectsXml().pipe(
       switchMap(objectsXml => this.dataParserService.parseItemXml(objectsXml)),
