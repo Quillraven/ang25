@@ -1,9 +1,21 @@
 <header>
-  <nav class="navbar bg-base-100 shadow-sm">
-    <a class="btn btn-ghost text-xl" routerLink="/" routerLinkActive="bg-primary text-primary-content" [routerLinkActiveOptions]="{exact: true}">Home</a>
-    <a class="btn btn-ghost text-xl" routerLink="/enemies" routerLinkActive="bg-primary text-primary-content">Enemies</a>
-    <a class="btn btn-ghost text-xl" routerLink="/items" routerLinkActive="bg-primary text-primary-content">Items</a>
-    <a class="btn btn-ghost text-xl" routerLink="/spells" routerLinkActive="bg-primary text-primary-content">Spells</a>
-    <a class="btn btn-ghost text-xl" routerLink="/how-to" routerLinkActive="bg-primary text-primary-content">How to mod</a>
-  </nav>
+  <div class="navbar bg-base-100 shadow-sm">
+    <div class="navbar-start">
+      <details class="dropdown" #navMenu>
+        <summary class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+          </svg>
+        </summary>
+        <ul class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow-sm">
+          <li><a routerLink="/" (click)="closeMenu()" class="text-xl" routerLinkActive="bg-primary text-primary-content" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+          <li><a routerLink="/enemies" (click)="closeMenu()" class="text-xl" routerLinkActive="bg-primary text-primary-content">Enemies</a></li>
+          <li><a routerLink="/items" (click)="closeMenu()" class="text-xl" routerLinkActive="bg-primary text-primary-content">Items</a></li>
+          <li><a routerLink="/spells" (click)="closeMenu()" class="text-xl" routerLinkActive="bg-primary text-primary-content">Spells</a></li>
+          <li><a routerLink="/how-to" (click)="closeMenu()" class="text-xl" routerLinkActive="bg-primary text-primary-content">How to mod</a></li>
+        </ul>
+      </details>
+      <p class="text-xl font-bold">Masamune</p>
+    </div>
+  </div>
 </header>
