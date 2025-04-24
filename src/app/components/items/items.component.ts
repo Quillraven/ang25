@@ -65,7 +65,7 @@ export class ItemsComponent implements OnInit {
       next: (propsData: { [key: string]: string }) => {
         this.updateItemNames(propsData);
         this.updateActionNames();
-        this.updateCategories();
+        this.updateCategories(propsData);
         this.sortItems();
       },
 
@@ -77,31 +77,13 @@ export class ItemsComponent implements OnInit {
 
   updateItemNames(propsMap: { [key: string]: string }): void {
     this.items.forEach(item => {
-      if (item.name === 'terealis_plant') {
-        item.name = propsMap['item.terealis_flower.name'] ?? "unnamed";
-      } else {
         item.name = propsMap['item.' + item.name.toLowerCase() + ".name"] ?? "unnamed";
-      }
     });
   }
 
-  updateCategories(): void {
+  updateCategories(propsMap: { [key: string]: string }): void {
     this.items.forEach(item => {
-      if (item.category === 'BOOTS') {
-        item.category = 'Boots';
-      } else if (item.category === 'ARMOR') {
-        item.category = 'Armor';
-      } else if (item.category === 'WEAPON') {
-        item.category = 'Weapon';
-      } else if (item.category === 'HELMET') {
-        item.category = 'Helmet';
-      } else if (item.category === 'ACCESSORY') {
-        item.category = 'Accessory';
-      } else if (item.category === 'QUEST') {
-        item.category = 'Quest';
-      } else {
-        item.category = 'Other';
-      }
+      item.category = propsMap['item.category.' + item.category.toLowerCase()] ?? "Other";
     });
   }
 

@@ -59,12 +59,6 @@ export class EnemiesComponent implements OnInit {
   updateActionNames(propsMap: { [key: string]: string }): void {
     this.enemies.forEach(enemy => {
       enemy.actions = enemy.actions.map(action => {
-        if (action === 'ATTACK_SINGLE') {
-          return "Attack (Single)"
-        } else if (action === 'REGENERATE1') {
-          action = "Regenerate";
-        }
-
         return propsMap['magic.' + action.toLowerCase() + ".name"] ?? action;
       })
     });
