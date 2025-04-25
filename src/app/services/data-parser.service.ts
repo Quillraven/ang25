@@ -5,6 +5,7 @@ import {from, map, Observable} from 'rxjs';
 import xml2js from 'xml2js';
 import {Enemy} from '../components/enemies/enemies.component';
 import {Item} from '../components/items/items.component';
+import {Action} from '../components/actions/actions.component';
 
 @Injectable({
   providedIn: 'root'
@@ -169,6 +170,41 @@ export class DataParserService {
           return acc;
         }, {});
         subscriber.next(propertiesObject);
+        subscriber.complete();
+      } catch (error) {
+        subscriber.error(error);
+      }
+    });
+  }
+
+  fetchProjectJson(): Observable<string> {
+    return this.http.get("https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/assets/maps/masamune-tiled.tiled-project", {responseType: 'text'});
+  }
+
+  parseActions(jsonData: string): Observable<Action[]> {
+    return new Observable(subscriber => {
+      try {
+        const projectData = JSON.parse(jsonData);
+        const actionTypes = projectData?.propertyTypes?.find((pType: any) => pType.name === 'ActionType') ?? {}
+        const actionTypeNames = actionTypes?.values ?? [];
+        if (!actionTypeNames || actionTypeNames.length === 0) {
+          console.warn('No action types found');
+          subscriber.next([]);
+          subscriber.complete();
+          return;
+        }
+
+        const actions = new Array<Action>();
+        actionTypeNames.forEach((actionTypeName: string) => {
+          actions.push({
+            name: actionTypeName,
+            description: '',
+            manaCost: 0,
+            category: 'Active (Offensive)',
+          })
+        });
+
+        subscriber.next(actions);
         subscriber.complete();
       } catch (error) {
         subscriber.error(error);
