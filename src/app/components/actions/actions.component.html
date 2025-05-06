@@ -1,35 +1,41 @@
 <div class="m-2">
-  @if (getCategories().length === 0) {
+  @if (getTypes().length === 0) {
     <div class="ml-2 flex items-center justify-start gap-4">
       <p>Loading actions</p>
       <span class="loading loading-dots loading-md"></span>
     </div>
   }
 
-  @for (category of getCategories(); track category) {
+  @for (type of getTypes(); track type) {
     <div class="collapse collapse-arrow bg-base-200 mb-4">
-      @if (category === 'Active (Offensive)') {
+      @if (type === 'Active (Offensive)') {
         <input type="checkbox" checked/>
       } @else {
         <input type="checkbox"/>
       }
       <div class="collapse-title text-xl font-medium">
-        {{ category }}
+        {{ type }}
       </div>
       <div class="collapse-content">
         <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,300px))]">
-          @for (action of getActionsByCategory(category); track action.name) {
+          @for (action of getActionsByType(type); track action.name) {
             <div
               class="card bg-base-100 shadow-md flex flex-col text-start transform transition-transform duration-500 hover:scale-105">
               <div class="card-body p-4">
                 <h2 class="card-title text-lg font-bold">{{ action.name }}</h2>
-                <p class="text-sm">{{ action.description }}</p>
+                @if (action.type !== 'Passive') {
+                  <div>
+                    Target Type:
+                    <span class="font-bold">{{ action.targetType }}</span>
+                  </div>
+                }
                 @if (action.manaCost) {
                   <div>
                     Mana Cost:
-                    <span class="font-bold text-primary">{{ action.manaCost }}</span>
+                    <span class="font-bold">{{ action.manaCost }}</span>
                   </div>
                 }
+                <p class="text-sm">{{ action.description }}</p>
               </div>
             </div>
           }

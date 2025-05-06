@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {DataParserService} from '../../services/data-parser.service';
 import {switchMap} from 'rxjs';
 
-export type ActionCategory = 'Active (Offensive)' | 'Active (Defensive)' | 'Passive';
+export type ActionType = 'Active (Offensive)' | 'Active (Defensive)' | 'Passive';
 
 export interface Action {
   name: string;
   description: string;
+  type: ActionType;
+  targetType: string;
   manaCost: number;
-  category: ActionCategory;
 }
 
 @Component({
@@ -23,64 +24,33 @@ export class ActionsComponent implements OnInit {
   constructor(private dataParserService: DataParserService) {
   }
 
-  getCategories(): string[] {
-    const categories = [...new Set(this.actions.map(action => action.category))];
+  getTypes(): string[] {
+    const types = [...new Set(this.actions.map(action => action.type))];
 
-    // Define the order of categories
-    const categoryOrder: Array<ActionCategory> = ['Active (Offensive)', 'Active (Defensive)', 'Passive'];
+    const typeOrder: Array<ActionType> = ['Active (Offensive)', 'Active (Defensive)', 'Passive'];
 
-    // Sort categories based on the defined order
-    return categories.sort((a, b) => {
-      const indexA = categoryOrder.indexOf(a);
-      const indexB = categoryOrder.indexOf(b);
+    return types.sort((a, b) => {
+      const indexA = typeOrder.indexOf(a);
+      const indexB = typeOrder.indexOf(b);
       return indexA - indexB;
     });
   }
 
-  getActionsByCategory(category: string): Action[] {
-    return this.actions.filter(action => action.category === category);
+  getActionsByType(type: string): Action[] {
+    return this.actions.filter(action => action.type === type);
   }
 
   ngOnInit(): void {
-    this.dataParserService.fetchProjectJson().pipe(
-      switchMap(projectJson => this.dataParserService.parseActions(projectJson)),
-      switchMap(parsedActions => {
-        const actionsToIgnore = ['UNDEFINED', 'USE_ITEM'];
-        this.actions = parsedActions.filter(action => !actionsToIgnore.includes(action.name));
-        return this.dataParserService.fetchProperties();
-      }),
-      switchMap(propsStr => this.dataParserService.parseProperties(propsStr))
+    this.dataParserService.fetchActionsJson().pipe(
+      switchMap(actionsJson => this.dataParserService.parseActions(actionsJson))
     ).subscribe({
-      next: (propsData: { [key: string]: string }) => {
-        this.updateCategories();
-        this.updateNameAndDescription(propsData);
+      next: (parsedActions) => {
+        this.actions = parsedActions;
         this.sortActions();
       },
-
       error: (error) => {
         console.error('Error reading actions', error);
       }
-    });
-  }
-
-  updateCategories(): void {
-    const categoryMap: Map<string, ActionCategory> = new Map();
-    categoryMap.set('HEAL', 'Active (Defensive)');
-    categoryMap.set('ITEM_HEALTH_RESTORE', 'Active (Defensive)');
-    categoryMap.set('ITEM_MANA_RESTORE', 'Active (Defensive)');
-    categoryMap.set('REGENERATE_MANA_RING', 'Passive');
-    categoryMap.set('STR_BOOSTER', 'Passive');
-    categoryMap.set('TRANSFORM', 'Passive');
-
-    this.actions.forEach(action => {
-      action.category = categoryMap.get(action.name) ?? 'Active (Offensive)';
-    });
-  }
-
-  updateNameAndDescription(propsMap: { [key: string]: string }): void {
-    this.actions.forEach(action => {
-      action.name = propsMap['magic.' + action.name.toLowerCase() + ".name"] ?? action.name;
-      action.description = propsMap['magic.' + action.name.toLowerCase() + ".description"] ?? '';
     });
   }
 

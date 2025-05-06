@@ -177,30 +177,30 @@ export class DataParserService {
     });
   }
 
-  fetchProjectJson(): Observable<string> {
-    return this.http.get("https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/assets/maps/masamune-tiled.tiled-project", {responseType: 'text'});
+  fetchActionsJson(): Observable<string> {
+    return this.http.get("https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/web/actions.json", {responseType: 'text'});
   }
 
   parseActions(jsonData: string): Observable<Action[]> {
     return new Observable(subscriber => {
       try {
-        const projectData = JSON.parse(jsonData);
-        const actionTypes = projectData?.propertyTypes?.find((pType: any) => pType.name === 'ActionType') ?? {}
-        const actionTypeNames = actionTypes?.values ?? [];
-        if (!actionTypeNames || actionTypeNames.length === 0) {
-          console.warn('No action types found');
+        const actionsData = JSON.parse(jsonData);
+
+        if (!actionsData || !Array.isArray(actionsData)) {
+          console.warn('No actions found or invalid JSON structure');
           subscriber.next([]);
           subscriber.complete();
           return;
         }
 
         const actions = new Array<Action>();
-        actionTypeNames.forEach((actionTypeName: string) => {
+        actionsData.forEach((actionInfo: any) => {
           actions.push({
-            name: actionTypeName,
-            description: '',
-            manaCost: 0,
-            category: 'Active (Offensive)',
+            name: actionInfo.name,
+            description: actionInfo.description,
+            type: actionInfo.type,
+            targetType: actionInfo.targetType,
+            manaCost: actionInfo.manaCost,
           })
         });
 
