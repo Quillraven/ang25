@@ -32,13 +32,9 @@ export class EnemiesComponent implements OnInit {
   ngOnInit(): void {
     this.dataParserService.fetchEnemiesJson().pipe(
       switchMap(enemiesJson => this.dataParserService.parseEnemiesJson(enemiesJson)),
-      switchMap(parsedEnemies => {
-        this.enemies = parsedEnemies;
-        return this.dataParserService.fetchProperties();
-      }),
-      switchMap(propsStr => this.dataParserService.parseProperties(propsStr))
     ).subscribe({
-      next: () => {
+      next: (parsedEnemies) => {
+        this.enemies = parsedEnemies;
         this.sortEnemies();
       },
 

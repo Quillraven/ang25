@@ -1,33 +1,27 @@
 import {Component, OnInit} from '@angular/core';
+import {CommonModule, KeyValuePipe} from '@angular/common';
 import {DataParserService} from '../../services/data-parser.service';
 import {switchMap} from 'rxjs';
+import {FormatStatsKeyPipe} from '../../pipes/format-key.pipe';
+import {OrderStatsPipe} from '../../pipes/order-stats.pipe';
 
 export interface Item {
   imageUrl: string;
   name: string;
-  cost: number;
   category: string;
-  constitution: number;
-  damage: number;
-  intelligence: number;
-  lifeMax: number;
-  life: number;
-  manaMax: number;
-  mana: number;
-  physicalDamage: number;
-  armor: number;
-  strength: number;
-  magicalEvade: number;
-  resistance: number;
+  stats: { [key: string]: number };
   speed: number;
   action: string;
+  cost: number;
 }
 
 @Component({
   selector: 'app-items',
-  imports: [],
+  imports: [CommonModule, FormatStatsKeyPipe, OrderStatsPipe],
+  providers: [KeyValuePipe],
   templateUrl: './items.component.html',
-  styleUrl: './items.component.css'
+  styleUrl: './items.component.css',
+  standalone: true
 })
 export class ItemsComponent implements OnInit {
   items: Item[] = [];
@@ -54,53 +48,16 @@ export class ItemsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataParserService.fetchObjectsXml().pipe(
-      switchMap(objectsXml => this.dataParserService.parseItemXml(objectsXml)),
-      switchMap(parsedItems => {
-        this.items = parsedItems;
-        return this.dataParserService.fetchProperties();
-      }),
-      switchMap(propsStr => this.dataParserService.parseProperties(propsStr))
+    this.dataParserService.fetchItems().pipe(
+      switchMap(itemsJson => this.dataParserService.parseItems(itemsJson)),
     ).subscribe({
-      next: (propsData: { [key: string]: string }) => {
-        this.updateItemNames(propsData);
-        this.updateActionNames();
-        this.updateCategories(propsData);
+      next: (parsedItems) => {
+        this.items = parsedItems;
         this.sortItems();
       },
 
       error: (error) => {
         console.error('Error reading items', error);
-      }
-    });
-  }
-
-  updateItemNames(propsMap: { [key: string]: string }): void {
-    this.items.forEach(item => {
-        item.name = propsMap['item.' + item.name.toLowerCase() + ".name"] ?? "unnamed";
-    });
-  }
-
-  updateCategories(propsMap: { [key: string]: string }): void {
-    this.items.forEach(item => {
-      item.category = propsMap['item.category.' + item.category.toLowerCase()] ?? "Other";
-    });
-  }
-
-  updateActionNames(): void {
-    const actionsToIgnore = ['ITEM_HEALTH_RESTORE', 'ITEM_MANA_RESTORE'];
-
-    this.items.forEach(item => {
-      if (actionsToIgnore.includes(item.action)) {
-        item.action = '';
-      } else if (item.action === 'SCROLL_INFERNO') {
-        item.action = 'Inferno';
-      } else if (item.action === 'REGENERATE_MANA_RING') {
-        item.action = 'Regenerate Mana';
-      } else if (item.action === 'STR_BOOSTER') {
-        item.action = 'Strength Booster';
-      } else if (item.action === 'HEAL') {
-        item.action = 'Heal';
       }
     });
   }

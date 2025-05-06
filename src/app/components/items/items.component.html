@@ -41,41 +41,13 @@
                 }
 
                 <div>
-                  @if (item.constitution !== 0) {
-                    <div>Constitution: {{ item.constitution }}</div>
-                  }
-                  @if (item.damage !== 0) {
-                    <div>Damage: {{ item.damage }}</div>
-                  }
-                  @if (item.intelligence !== 0) {
-                    <div>Intelligence: {{ item.intelligence }}</div>
-                  }
-                  @if (item.lifeMax !== 0) {
-                    <div>Max life: {{ item.lifeMax }}</div>
-                  }
-                  @if (item.life !== 0) {
-                    <div>Restores life: {{ item.life }}</div>
-                  }
-                  @if (item.manaMax !== 0) {
-                    <div>Max mana: {{ item.manaMax }}</div>
-                  }
-                  @if (item.mana !== 0) {
-                    <div>Restores mana: {{ item.mana }}</div>
-                  }
-                  @if (item.physicalDamage !== 0) {
-                    <div>Physical damage: {{ item.physicalDamage }}</div>
-                  }
-                  @if (item.armor !== 0) {
-                    <div>Armor: {{ item.armor }}</div>
-                  }
-                  @if (item.strength !== 0) {
-                    <div>Strength: {{ item.strength }}</div>
-                  }
-                  @if (item.magicalEvade !== 0) {
-                    <div>Magical evade: {{ item.magicalEvade * 100 }}%</div>
-                  }
-                  @if (item.resistance !== 0) {
-                    <div>Resistance: {{ item.resistance }}</div>
+                  @for (stat of item.stats | keyvalue | orderStats; track stat.key) {
+                    <div>
+                      {{ stat.key | formatStatsKey }}:
+                      <span [class.font-bold]="stat.key === 'damage'">
+                        {{ stat.key === 'physicalEvade' || stat.key === 'magicalEvade' ? stat.value * 100 + '%' : stat.value }}
+                      </span>
+                    </div>
                   }
                   @if (item.speed !== 0) {
                     <div>Move speed: {{ item.speed }}</div>
