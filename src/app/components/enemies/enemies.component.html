@@ -13,24 +13,6 @@
         <h2 class="card-title text-lg font-bold">{{ enemy.name }}</h2>
         <div class="text-sm text-accent opacity-80">Level: {{ enemy.level }}</div>
         <div class="py-2">
-          <div>Life: {{ enemy.life }}</div>
-          <div>Agility: {{ enemy.agility }}</div>
-          <div>
-            Damage:
-            <span class="font-bold">{{ enemy.damage }}</span>
-          </div>
-          @if (enemy.mana !== 0) {
-            <div>Mana: {{ enemy.mana }}</div>
-          }
-          @if (enemy.resistance !== 0) {
-            <div>Resistance: {{ enemy.resistance }}</div>
-          }
-          @if (enemy.armor !== 0) {
-            <div>Armor: {{ enemy.armor }}</div>
-          }
-          @if (enemy.physicalEvade !== 0) {
-            <div>Physical evade: {{ enemy.physicalEvade * 100 }}%</div>
-          }
           <div>
             XP:
             <span class="font-bold text-warning">{{ enemy.xp }}</span>
@@ -39,10 +21,18 @@
             Talons:
             <span class="font-bold text-primary">{{ enemy.talons }}</span>
           </div>
-          @if (enemy.actions.length > 0) {
+          @for (stat of enemy.stats | keyvalue | orderStats; track stat.key) {
+            <div>
+              {{ stat.key | formatStatsKey }}:
+              <span [class.font-bold]="stat.key === 'damage'">
+                {{ stat.key === 'physicalEvade' ? stat.value * 100 + '%' : stat.value }}
+              </span>
+            </div>
+          }
+          @if (enemy.combatActions.length > 0) {
             <div class="mt-4">Actions:
               <ul class="list-disc list-inside">
-                @for (action of enemy.actions; track $index) {
+                @for (action of enemy.combatActions; track $index) {
                   <li>{{ action }}</li>
                 }
               </ul>

@@ -1,27 +1,27 @@
 import {Component, OnInit} from '@angular/core';
+import {CommonModule, KeyValuePipe} from '@angular/common';
 import {switchMap} from 'rxjs';
 import {DataParserService} from '../../services/data-parser.service';
+import {FormatStatsKeyPipe} from '../../pipes/format-key.pipe';
+import {OrderStatsPipe} from '../../pipes/order-stats.pipe';
 
 export interface Enemy {
   imageUrl: string;
   name: string;
   level: number;
-  life: number;
-  mana: number;
-  resistance: number;
-  armor: number;
-  physicalEvade: number;
-  agility: number;
-  damage: number;
+  stats: { [key: string]: number };
   talons: number;
   xp: number;
-  actions: string[];
+  combatActions: string[];
 }
 
 @Component({
   selector: 'app-enemies',
   templateUrl: './enemies.component.html',
-  styleUrl: './enemies.component.css'
+  styleUrl: './enemies.component.css',
+  providers: [KeyValuePipe],
+  imports: [CommonModule, FormatStatsKeyPipe, OrderStatsPipe],
+  standalone: true
 })
 export class EnemiesComponent implements OnInit {
   enemies: Enemy[] = [];
@@ -30,37 +30,21 @@ export class EnemiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataParserService.fetchObjectsXml().pipe(
-      switchMap(objectsXml => this.dataParserService.parseEnemyXml(objectsXml)),
+    this.dataParserService.fetchEnemiesJson().pipe(
+      switchMap(enemiesJson => this.dataParserService.parseEnemiesJson(enemiesJson)),
       switchMap(parsedEnemies => {
         this.enemies = parsedEnemies;
         return this.dataParserService.fetchProperties();
       }),
       switchMap(propsStr => this.dataParserService.parseProperties(propsStr))
     ).subscribe({
-      next: (propsData: { [key: string]: string }) => {
-        this.updateEnemyNames(propsData);
-        this.updateActionNames(propsData);
+      next: () => {
         this.sortEnemies();
       },
 
       error: (error) => {
         console.error('Error reading enemies', error);
       }
-    });
-  }
-
-  updateEnemyNames(propsMap: { [key: string]: string }): void {
-    this.enemies.forEach(enemy => {
-      enemy.name = propsMap['enemy.' + enemy.name + ".name"] ?? "unnamed";
-    });
-  }
-
-  updateActionNames(propsMap: { [key: string]: string }): void {
-    this.enemies.forEach(enemy => {
-      enemy.actions = enemy.actions.map(action => {
-        return propsMap['magic.' + action.toLowerCase() + ".name"] ?? action;
-      })
     });
   }
 

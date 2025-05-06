@@ -11,74 +11,46 @@ import {Action} from '../components/actions/actions.component';
   providedIn: 'root'
 })
 export class DataParserService {
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) { }
+  private readonly baseImgUrl = 'https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/'
 
-  fetchObjectsXml(): Observable<string> {
-    return this.http.get("https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/assets/maps/objects.tsx", { responseType: 'text' });
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
   }
 
-  parseEnemyXml(xmlData: string): Observable<Enemy[]> {
-    const parser = new xml2js.Parser();
+  fetchEnemiesJson(): Observable<string> {
+    return this.http.get("https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/web/enemies.json", {responseType: 'text'});
+  }
 
-    return from(parser.parseStringPromise(xmlData)).pipe(
-      map((result: any) => {
-        const enemies: Enemy[] = [];
-        if (!result.tileset || !Array.isArray(result.tileset.tile)) {
-          console.warn('Invalid XML structure.');
-          return enemies;
+  parseEnemiesJson(jsonData: string): Observable<Enemy[]> {
+    return new Observable(subscriber => {
+      try {
+        const enemiesData = JSON.parse(jsonData);
+
+        if (!enemiesData || !Array.isArray(enemiesData)) {
+          console.warn('No enemies found or invalid JSON structure');
+          subscriber.next([]);
+          subscriber.complete();
+          return;
         }
 
-        const enemyTiles = result.tileset.tile.filter((tile: any) => tile.$.type === 'EnemyObject');
-        if (!enemyTiles || enemyTiles.length === 0) {
-          console.warn('No enemies found');
-          return enemies;
-        }
-
-        enemyTiles.forEach((enemyTile: any) => {
-          const imageSource = enemyTile.image[0].$.source;
-          const name = imageSource.split('/')[1].split('.')[0];
-          const imageUrl = 'https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/assets/maps/' + imageSource;
-
-          const enemyProps = enemyTile.properties[0];
-          const level = enemyProps.property.find((prop: any) => prop.$.name === 'level')?.$?.value ?? 0;
-          const talons = enemyProps.property.find((prop: any) => prop.$.name === 'talons')?.$?.value ?? 0;
-          const xp = enemyProps.property.find((prop: any) => prop.$.name === 'xp')?.$?.value ?? 0;
-
-          const stats = enemyProps.property
-            .find((prop: any) => prop.$.name === 'stats')
-            ?.properties[0]
-            ?.property
-            ?? [];
-          const life = parseInt(stats.find((stat: any) => stat.$.name === 'baseLife')?.$?.value ?? 0);
-          const agility = parseInt(stats.find((stat: any) => stat.$.name === 'agility')?.$?.value ?? 0);
-          const damage = parseInt(stats.find((stat: any) => stat.$.name === 'damage')?.$?.value ?? 0);
-          const mana = parseInt(stats.find((stat: any) => stat.$.name === 'baseMana')?.$?.value ?? 0);
-          const resistance = parseInt(stats.find((stat: any) => stat.$.name === 'resistance')?.$?.value ?? 0);
-          const armor = parseInt(stats.find((stat: any) => stat.$.name === 'armor')?.$?.value ?? 0);
-          const physicalEvade = parseFloat(stats.find((stat: any) => stat.$.name === 'physicalEvade')?.$?.value ?? 0);
-
-          const actions = enemyProps.property.find((prop: any) => prop.$.name === 'combatActions')?.$?.value ?? '';
-
+        const enemies = new Array<Enemy>();
+        enemiesData.forEach((enemyInfo: any) => {
           enemies.push({
-            imageUrl: this.sanitizeImageUrl(imageUrl),
-            name: name,
-            level: level,
-            damage: damage,
-            mana: mana,
-            resistance: resistance,
-            armor: armor,
-            physicalEvade: physicalEvade,
-            life: life,
-            agility: agility,
-            talons: talons,
-            xp: xp,
-            actions: actions.split(','),
+            imageUrl: this.sanitizeImageUrl(this.baseImgUrl + enemyInfo.imageUrl),
+            name: enemyInfo.name,
+            level: enemyInfo.level,
+            stats: enemyInfo.stats,
+            talons: enemyInfo.talons,
+            xp: enemyInfo.xp,
+            combatActions: enemyInfo.combatActions,
           });
         });
 
-        return enemies;
-      })
-    );
+        subscriber.next(enemies);
+        subscriber.complete();
+      } catch (error) {
+        subscriber.error(error);
+      }
+    });
   }
 
   parseItemXml(xmlData: string): Observable<Item[]> {
@@ -155,7 +127,7 @@ export class DataParserService {
   }
 
   fetchProperties(): Observable<string> {
-    return this.http.get("https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/assets/ui/messages.properties", { responseType: 'text' });
+    return this.http.get("https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/assets/ui/messages.properties", {responseType: 'text'});
   }
 
   parseProperties(propsData: string): Observable<{ [key: string]: string }> {
