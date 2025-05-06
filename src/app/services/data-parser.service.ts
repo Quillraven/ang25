@@ -1,18 +1,21 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Observable} from 'rxjs';
 import {Enemy} from '../components/enemies/enemies.component';
 import {Item} from '../components/items/items.component';
 import {Action} from '../components/actions/actions.component';
+import {API_BASE_URL} from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataParserService {
-  private readonly baseUrl = 'https://raw.githubusercontent.com/Quillraven/Masamune/refs/heads/master/'
-
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    @Inject(API_BASE_URL) private readonly baseUrl: string
+  ) {
   }
 
   fetchEnemiesJson(): Observable<string> {
