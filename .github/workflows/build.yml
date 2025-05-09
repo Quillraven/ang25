@@ -32,7 +32,7 @@ jobs:
         run: pnpm install
 
       - name: Build Angular app
-        run: npx ng build --output-path docs --base-href /masamune-ang/
+        run: npx ng build --configuration production --output-path docs --base-href /masamune-ang/
 
       - name: Copy index.html to 404.html
         run: cp docs/browser/index.html docs/browser/404.html
