@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {Enemy} from '../components/enemies/enemies.component';
 import {Item} from '../components/items/items.component';
 import {Action} from '../components/actions/actions.component';
-import {API_BASE_URL} from '../config/api.config';
+import {API_URL} from '../config/app.token';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class DataParserService {
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
-    @Inject(API_BASE_URL) private readonly baseUrl: string
+    @Inject(API_URL) private readonly baseUrl: string
   ) {
   }
 

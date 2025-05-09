@@ -1,15 +1,15 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
-import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
-import { API_BASE_URL, API_CONFIG } from './config/api.config';
+import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
+import {provideRouter} from '@angular/router';
+import {routes} from './app.routes';
+import {provideHttpClient} from '@angular/common/http';
+import {API_URL} from './config/app.token';
+import {environment} from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    { provide: API_BASE_URL, useValue: API_CONFIG.baseUrl }
+    {provide: API_URL, useValue: environment.apiUrl}
   ]
 };
